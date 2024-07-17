@@ -95,18 +95,18 @@ void setup() {
 char screen = 'h';
 
 int drawPos[2] = { 0, 0 };
-char drawMatrix[2][17] = {"                ", "                "};
+char drawMatrix[2][17] = { "                ", "                " };
 
 void newScreen() {
   lcd.clear();
 
   for (int row = 0; row < 2; row++) {
-      char matrixRow = drawMatrix[row];
-      lcd.setCursor(0, row);
-      lcd.print(matrixRow);
+    lcd.setCursor(0, row);
+    lcd.print(drawMatrix[row]);
   }
-  lcd.setCursor(drawPos[0], drawPos[1]);
-  lcd.print("x");
+    lcd.setCursor(drawPos[0], drawPos[1]);
+    lcd.print("x");
+
   delay(500);
 }
 
@@ -142,7 +142,7 @@ void draw() {
       break;
   }
   if (digitalRead(SW_pin) == 0) {
-    drawMatrix[drawPos[1]][drawPos[0]] = 'y';
+    drawMatrix[drawPos[1]][drawPos[0]] = 'o';
     Serial.println(drawPos[1]);
     Serial.println(drawPos[0]);
     newScreen();
