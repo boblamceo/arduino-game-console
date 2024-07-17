@@ -167,8 +167,11 @@ bool charJumped = false;
 
 char board[17] = "                ";
 
+int score = 0;
+
 void jump() {
-  lcd.setCursor(0, 0);
+  lcd.setCursor(9 - (score == 0 ? 1 : (int)log10(abs(score)) + 1), 0);
+  lcd.print("Score: " + String(score));
   int randomNumber;
   randomNumber = random(4, 10);
   bool hasObstacle;
