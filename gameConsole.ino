@@ -165,18 +165,25 @@ void draw() {
 
 bool charJumped = false;
 
-int board[17] = "                ";
+char board[17] = "                ";
 
 void jump() {
   lcd.setCursor(0, 0);
   int randomNumber;
-  randomNumber = random(5, 8);
+  randomNumber = random(4, 10);
   bool hasObstacle;
   hasObstacle = containsObstacle(board, 15 - randomNumber, 15);
   if(!hasObstacle){
     board[15] = 'i';
   }
 
+  for (int i = 0; i < 15; i++) {
+    board[i] = board[i + 1];
+  }
+  board[15] = ' ';
+  lcd.setCursor(0, 1);
+  lcd.print(board);
+  delay(500);
   /*
     1. if obstacles, move them left by 1
     2. generate a random number from 5 to 7. If there aren't any obstacles for the last x squares, generate obstacle on last square
