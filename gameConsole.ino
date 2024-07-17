@@ -104,8 +104,8 @@ void newScreen() {
     lcd.setCursor(0, row);
     lcd.print(drawMatrix[row]);
   }
-    lcd.setCursor(drawPos[0], drawPos[1]);
-    lcd.print("x");
+  lcd.setCursor(drawPos[0], drawPos[1]);
+  lcd.print("x");
 
   delay(500);
 }
@@ -142,7 +142,12 @@ void draw() {
       break;
   }
   if (digitalRead(SW_pin) == 0) {
-    drawMatrix[drawPos[1]][drawPos[0]] = 'o';
+    if (drawMatrix[drawPos[1]][drawPos[0]] == 'o') {
+      drawMatrix[drawPos[1]][drawPos[0]] = ' ';
+    } else {
+      drawMatrix[drawPos[1]][drawPos[0]] = 'o';
+    }
+
     Serial.println(drawPos[1]);
     Serial.println(drawPos[0]);
     newScreen();
