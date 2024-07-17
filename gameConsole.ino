@@ -195,10 +195,23 @@ void jump() {
   if(charJumped){
     charJumpedTwo = true;
     lcd.print("o");
+    if(board[1] == 'i'){
+      score += 1;
+    }
   } else {
     lcd.print("  ");
     lcd.setCursor(1, 1);
     lcd.print("o");
+    if(board[1] == 'i'){
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("GAME OVER");
+      lcd.setCursor(0, 1);
+      lcd.print("Score: " + String(score));
+      while(true){
+
+      }
+    }
   }
 
   char currentDirection;
@@ -212,7 +225,16 @@ void jump() {
     3. if up, then go down
     4. if joystick up, then jump
   */
+  if(score >= 15){
+delay(50);
+  } else if(score >= 10){
+    delay(200);
+  } else if(score >= 5){
     delay(500);
+  } else {
+    delay(700);
+  }
+    
 }
 
 void maze() {
