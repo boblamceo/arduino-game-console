@@ -164,6 +164,7 @@ void draw() {
 }
 
 bool charJumped = false;
+bool charJumpedTwo = false;
 
 char board[17] = "                ";
 
@@ -186,13 +187,32 @@ void jump() {
   board[15] = ' ';
   lcd.setCursor(0, 1);
   lcd.print(board);
-  delay(500);
+  if(charJumpedTwo){
+    charJumped = false;
+    charJumpedTwo = false;
+  }
+     lcd.setCursor(1, 0);
+  if(charJumped){
+    charJumpedTwo = true;
+    lcd.print("o");
+  } else {
+    lcd.print("  ");
+    lcd.setCursor(1, 1);
+    lcd.print("o");
+  }
+
+  char currentDirection;
+  currentDirection = direction(X_pin, Y_pin);
+  if(currentDirection == 'u'){
+    
+  }
   /*
     1. if obstacles, move them left by 1
     2. generate a random number from 5 to 7. If there aren't any obstacles for the last x squares, generate obstacle on last square
     3. if up, then go down
     4. if joystick up, then jump
   */
+    delay(500);
 }
 
 void maze() {
