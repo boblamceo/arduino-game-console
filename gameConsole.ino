@@ -95,22 +95,19 @@ void setup() {
 char screen = 'h';
 
 int drawPos[2] = { 0, 0 };
-char drawMatrix[2][16] = { { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' } };
+char drawMatrix[2][17] = {"                ", "                "};
 
 void newScreen() {
   lcd.clear();
 
   for (int row = 0; row < 2; row++) {
-    for (int square = 0; square < 16; square++) {
-      Serial.println(row);
-      Serial.println(square);
-      char matrixSquare = drawMatrix[row][square];
-      lcd.setCursor(row, square);
-      lcd.print(matrixSquare);
-    }
+      char matrixRow = drawMatrix[row];
+      lcd.setCursor(0, row);
+      lcd.print(matrixRow);
   }
   lcd.setCursor(drawPos[0], drawPos[1]);
   lcd.print("x");
+  delay(500);
 }
 
 void draw() {
@@ -118,9 +115,37 @@ void draw() {
   currDirection = direction(X_pin, Y_pin);
   switch (currDirection) {
     case 'r':
-      drawPos[0] += 1;
-      newScreen();
+      if (drawPos[0] < 15) {
+        drawPos[0] += 1;
+        newScreen();
+      }
       break;
+    case 'l':
+      if (drawPos[0] > 0) {
+        drawPos[0] -= 1;
+        newScreen();
+      }
+      break;
+    case 'u':
+      if (drawPos[1] == 1) {
+        drawPos[1] = 0;
+        newScreen();
+      }
+      break;
+    case 'd':
+      if (drawPos[1] == 0) {
+        drawPos[1] = 1;
+        newScreen();
+      }
+      break;
+    default:
+      break;
+  }
+  if (digitalRead(SW_pin) == 0) {
+    drawMatrix[drawPos[1]][drawPos[0]] = 'y';
+    Serial.println(drawPos[1]);
+    Serial.println(drawPos[0]);
+    newScreen();
   }
 }
 
@@ -186,6 +211,7 @@ void home() {
     Serial.println("YUP");
     if (cursorX == 0) {
       if (cursorY == 0) {
+        delay(1000);
         screen = 'd';
         newScreen();
       } else {
