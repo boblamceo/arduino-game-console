@@ -204,7 +204,7 @@ void jump() {
   char currentDirection;
   currentDirection = direction(X_pin, Y_pin);
   if(currentDirection == 'u'){
-    
+    charJumped = true;
   }
   /*
     1. if obstacles, move them left by 1
