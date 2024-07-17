@@ -11,6 +11,15 @@ LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 int cursorX = 0;
 int cursorY = 0;
 
+bool containsObstacle(char* array, int startIndex, int endIndex) {
+  for (int i = startIndex; i <= endIndex; i++) {
+    if (array[i] == 'i') {
+      return true;
+    }
+  }
+  return false;
+}
+
 char direction(int X_pin, int Y_pin) {
   if (analogRead(X_pin) > 600) {
     return 'r';
@@ -154,9 +163,26 @@ void draw() {
   }
 }
 
+bool charJumped = false;
+
+int board[17] = "                ";
+
 void jump() {
   lcd.setCursor(0, 0);
-  lcd.print("Jump");
+  int randomNumber;
+  randomNumber = random(5, 8);
+  bool hasObstacle;
+  hasObstacle = containsObstacle(board, 15 - randomNumber, 15);
+  if(!hasObstacle){
+    board[15] = 'i';
+  }
+
+  /*
+    1. if obstacles, move them left by 1
+    2. generate a random number from 5 to 7. If there aren't any obstacles for the last x squares, generate obstacle on last square
+    3. if up, then go down
+    4. if joystick up, then jump
+  */
 }
 
 void maze() {
