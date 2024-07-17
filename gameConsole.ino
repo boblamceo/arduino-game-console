@@ -94,9 +94,34 @@ void setup() {
 
 char screen = 'h';
 
+int drawPos[2] = { 0, 0 };
+char drawMatrix[2][16] = { { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' } };
+
+void newScreen() {
+  lcd.clear();
+
+  for (int row = 0; row < 2; row++) {
+    for (int square = 0; square < 16; square++) {
+      Serial.println(row);
+      Serial.println(square);
+      char matrixSquare = drawMatrix[row][square];
+      lcd.setCursor(row, square);
+      lcd.print(matrixSquare);
+    }
+  }
+  lcd.setCursor(drawPos[0], drawPos[1]);
+  lcd.print("x");
+}
+
 void draw() {
-  lcd.setCursor(0, 0);
-  lcd.print("Draw");
+  char currDirection;
+  currDirection = direction(X_pin, Y_pin);
+  switch (currDirection) {
+    case 'r':
+      drawPos[0] += 1;
+      newScreen();
+      break;
+  }
 }
 
 void jump() {
@@ -162,18 +187,18 @@ void home() {
     if (cursorX == 0) {
       if (cursorY == 0) {
         screen = 'd';
-          lcd.clear();
+        newScreen();
       } else {
         screen = 'm';
-          lcd.clear();
+        lcd.clear();
       }
     } else {
       if (cursorY == 0) {
         screen = 'j';
-          lcd.clear();
+        lcd.clear();
       } else {
         screen = 'g';
-          lcd.clear();
+        lcd.clear();
       }
     }
   }
