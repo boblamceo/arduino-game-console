@@ -274,10 +274,12 @@ void drawBoard(int charX, int charY) {
 
 void maze() {
   drawBoard(characterPos[0], characterPos[1]);
-  if(characterPos[0] == 15 && characterPos[1] == 14){
+  if (characterPos[0] == 15 && characterPos[1] == 14) {
     lcd.clear();
     lcd.setCursor(0, 0);
-    lcd.print("You've Solved The Maze!");
+    lcd.print("You've Solved");
+    lcd.setCursor(0, 1);
+    lcd.print("The Maze!");
   }
   char currentDirection;
   currentDirection = direction(X_pin, Y_pin);
@@ -308,9 +310,33 @@ void maze() {
   delay(500);
 }
 
+int guessNumber = random(1, 21);
+int prevNumber = 0;
+int currentNumber = 0;
 void guess() {
   lcd.setCursor(0, 0);
-  lcd.print("Guess");
+  if (currentNumber == guessNumber) {
+    lcd.clear();
+    lcd.print("YOU DID IT!");
+    while (true) {
+    }
+  }
+  lcd.print("Your number: " + String(currentNumber));
+  lcd.setCursor(0, 1);
+  if (abs(guessNumber - prevNumber) < abs(guessNumber - currentNumber)) {
+    lcd.print("COLD");
+  } else if (abs(guessNumber - prevNumber) > abs(guessNumber - currentNumber)) {
+    lcd.print("HOT");
+  }
+  char currentDirection;
+  currentDirection = direction(X_pin, Y_pin);
+  prevNumber = currentNumber;
+  if (currentDirection == 'l' && currentNumber > 0) {
+    currentNumber -= 1;
+  } else if (currentDirection == 'r' && currentNumber < 20) {
+    currentNumber += 1;
+  }
+  delay(500);
 }
 
 void home() {
@@ -373,6 +399,27 @@ void home() {
         lcd.clear();
       } else {
         screen = 'g';
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Guess The");
+        lcd.setCursor(0, 1);
+        lcd.print("NUMBER!");
+        delay(2000);
+        lcd.setCursor(0, 0);
+        lcd.print("You will guess");
+        lcd.setCursor(0, 1);
+        lcd.print("a number");
+        delay(2000);
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("from 1-20.");
+        delay(2000);
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("I will say if");
+        lcd.setCursor(0, 1);
+        lcd.print("it is hot/cold");
+        delay(2000);
         lcd.clear();
       }
     }
