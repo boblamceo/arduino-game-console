@@ -177,7 +177,7 @@ void jump() {
   randomNumber = random(4, 10);
   bool hasObstacle;
   hasObstacle = containsObstacle(board, 15 - randomNumber, 15);
-  if(!hasObstacle){
+  if (!hasObstacle) {
     board[15] = 'i';
   }
 
@@ -187,36 +187,35 @@ void jump() {
   board[15] = ' ';
   lcd.setCursor(0, 1);
   lcd.print(board);
-  if(charJumpedTwo){
+  if (charJumpedTwo) {
     charJumped = false;
     charJumpedTwo = false;
   }
-     lcd.setCursor(1, 0);
-  if(charJumped){
+  lcd.setCursor(1, 0);
+  if (charJumped) {
     charJumpedTwo = true;
     lcd.print("o");
-    if(board[1] == 'i'){
+    if (board[1] == 'i') {
       score += 1;
     }
   } else {
     lcd.print("  ");
     lcd.setCursor(1, 1);
     lcd.print("o");
-    if(board[1] == 'i'){
+    if (board[1] == 'i') {
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("GAME OVER");
       lcd.setCursor(0, 1);
       lcd.print("Score: " + String(score));
-      while(true){
-
+      while (true) {
       }
     }
   }
 
   char currentDirection;
   currentDirection = direction(X_pin, Y_pin);
-  if(currentDirection == 'u'){
+  if (currentDirection == 'u') {
     charJumped = true;
   }
   /*
@@ -225,16 +224,44 @@ void jump() {
     3. if up, then go down
     4. if joystick up, then jump
   */
-  if(score >= 15){
-delay(50);
-  } else if(score >= 10){
+  if (score >= 15) {
+    delay(50);
+  } else if (score >= 10) {
     delay(200);
-  } else if(score >= 5){
+  } else if (score >= 5) {
     delay(500);
   } else {
     delay(700);
   }
-    
+}
+
+char board[16][16] = {
+  {' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' '},
+  {'#', '#', '#', '#', '#', ' ', '#', '#', ' ', '#', '#', '#', '#', ' ', '#', ' '},
+  {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', '#', ' '},
+  {'#', '#', '#', '#', '#', '#', '#', '#', ' ', '#', '#', '#', ' ', '#', '#', ' '},
+  {'#', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+  {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', ' '},
+  {' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+  {' ', '#', '#', '#', '#', ' ', '#', '#', '#', ' ', '#', '#', ' ', '#', '#', '#'},
+  {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+  {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', ' ', '#', '#', ' '},
+  {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' '},
+  {'#', '#', '#', '#', ' ', '#', '#', '#', ' ', '#', '#', '#', '#', '#', ' ', '#'},
+  {'#', ' ', ' ', '#', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+  {'#', '#', ' ', '#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', ' '},
+  {' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+  {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', ' '},
+};
+
+
+void drawBoard(charX, charY) {
+  for (int i = 0; i < 16; i++) {
+    for (int j = 0; j < 16; j++) {
+      lcd.setCursor(j * 8, i * 8);
+      lcd.print(maze[i][j]);
+    }
+  }
 }
 
 void maze() {
