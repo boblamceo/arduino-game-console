@@ -250,27 +250,62 @@ char mazeBoard[16][16] = {
   { '#', '#', '#', '#', ' ', '#', '#', '#', ' ', '#', '#', '#', '#', '#', ' ', '#' },
   { '#', ' ', ' ', '#', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
   { '#', '#', ' ', '#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', ' ' },
-  { ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
-  { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', ' ' },
+  { ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'E' },
+  { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' },
 };
 
-int character
+int characterPos[2] = { 0, 0 };
 
 void drawBoard(int charX, int charY) {
-  char newBoard[16][16];  // Create a new array to store the extracted elements
-
-  for (int i = charY; i <= charY + 1; i++) {
-    memcpy(newBoard[i - charY], mazeBoard[i], sizeof(newBoard[i - charY]));
+  char newBoard[2][16];  // Create a new array to store the extracted elements
+  if (charY != 15) {
+    for (int i = charY; i <= charY + 1; i++) {
+      memcpy(newBoard[i - charY], mazeBoard[i], sizeof(newBoard[i - charY]));
+    }
   }
 
   lcd.setCursor(0, 0);
   lcd.print(newBoard[0]);
   lcd.setCursor(0, 1);
   lcd.print(newBoard[1]);
+  lcd.setCursor(charX, 0);
+  lcd.print('o');
 }
 
 void maze() {
-  drawBoard(0, 1);
+  drawBoard(characterPos[0], characterPos[1]);
+  if(characterPos[0] == 15 && characterPos[1] == 14){
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("You've Solved The Maze!");
+  }
+  char currentDirection;
+  currentDirection = direction(X_pin, Y_pin);
+  switch (currentDirection) {
+    case 'u':
+      if (characterPos[1] > 0 && mazeBoard[characterPos[1] - 1][characterPos[0]] != '#') {
+        characterPos[1] -= 1;
+      }
+      break;
+    case 'd':
+      if (characterPos[1] < 15 && mazeBoard[characterPos[1] + 1][characterPos[0]] != '#') {
+        characterPos[1] += 1;
+      }
+      break;
+    case 'l':
+      if (characterPos[0] > 0 && mazeBoard[characterPos[1]][characterPos[0] - 1] != '#') {
+        characterPos[0] -= 1;
+      }
+      break;
+    case 'r':
+      if (characterPos[0] < 15 && mazeBoard[characterPos[1]][characterPos[0] + 1] != '#') {
+        characterPos[0] += 1;
+      }
+      break;
+    default:
+      break;
+  }
+  delay(500);
 }
 
 void guess() {
