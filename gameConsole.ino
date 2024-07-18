@@ -312,31 +312,46 @@ void maze() {
 
 int guessNumber = random(1, 21);
 int prevNumber = 0;
-int currentNumber = 0;
+int currentNumber = 1;
+int tries = 0;
 void guess() {
   lcd.setCursor(0, 0);
-  if (currentNumber == guessNumber) {
-    lcd.clear();
-    lcd.print("YOU DID IT!");
-    while (true) {
-    }
-  }
-  lcd.print("Your number: " + String(currentNumber));
+  lcd.print("Your number: " + String(currentNumber - 1));
   lcd.setCursor(0, 1);
-  if (abs(guessNumber - prevNumber) < abs(guessNumber - currentNumber)) {
-    lcd.print("COLD");
-  } else if (abs(guessNumber - prevNumber) > abs(guessNumber - currentNumber)) {
-    lcd.print("HOT");
+  if (digitalRead(SW_pin) == 0) {
+    Serial.println("poggers");
+    Serial.print(guessNumber);
+    Serial.print(currentNumber);
+    Serial.print(prevNumber);
+    tries += 1;
+    if (currentNumber == guessNumber) {
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("YOU DID IT!");
+      lcd.setCursor(0, 1);
+      lcd.print("Tries: " + String(tries));
+      while (true) {
+      }
+    }
+    if (abs(guessNumber - prevNumber) < abs(guessNumber - currentNumber)) {
+      lcd.setCursor(0, 1);
+      lcd.print("COLD");
+    } else if (abs(guessNumber - prevNumber) > abs(guessNumber - currentNumber)) {
+      lcd.setCursor(0, 1);
+      lcd.print("HOT");
+    }
   }
   char currentDirection;
   currentDirection = direction(X_pin, Y_pin);
-  prevNumber = currentNumber;
   if (currentDirection == 'l' && currentNumber > 0) {
+    prevNumber = currentNumber;
     currentNumber -= 1;
   } else if (currentDirection == 'r' && currentNumber < 20) {
+    prevNumber = currentNumber;
     currentNumber += 1;
   }
   delay(500);
+  lcd.clear();
 }
 
 void home() {
