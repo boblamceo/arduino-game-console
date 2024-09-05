@@ -6,4 +6,6 @@ The gaming console has four "games". The first is a drawing editor, with a curso
 
 To reset the gaming console, press the reset button on the Arduino.
 
+To run the project, follow the schematic above, and run the code in this repo! My Arduino is Arduino Mega 2560.
+
 Find the demo in the Hackclub slack!: https://app.slack.com/client/T0266FRGM/C01504DCLVD 
